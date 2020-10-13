@@ -1,22 +1,10 @@
 import requests
-import os
 from datetime import datetime
 
-working_dir = os.path.dirname(os.path.abspath(__file__))
-api_file = os.path.join(working_dir, "api.env")
-
 class weatherData:
+    user_api = "6aee7b32df66d715eb39a5015fa4eefe"
+
     def __init__(self):
-        try:
-            f = open(api_file, "r")
-            lines = f.readlines()
-            for line in lines:
-                parts = line.split("=")
-                if parts[0] == "weather":
-                    self.user_api = parts[1]
-        except OSError as e:
-            print(e)
-        
         self.updateLoc()
         self.update()
 
@@ -48,6 +36,5 @@ class weatherData:
     def getLoc(self):
         return self.location
 
-### test code
-#   w = weatherData()
-#   print(w.getLoc(), w.getTemp(), w.getTime(), w.getWindSpd(), w.getDescr())
+w = weatherData()
+print(w.getLoc(), w.getTemp(), w.getTime(), w.getWindSpd(), w.getDescr())

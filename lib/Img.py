@@ -14,10 +14,6 @@ class ImageCreator:
     def __init__(self):
         self.width = 640
         self.height = 384
-        self.font = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), 40)
-
-    def setFont(self, fontSize):
-        self.font = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), fontSize)
 
     def initiate(self, orientation = 1):
         if orientation == 1:
@@ -29,8 +25,9 @@ class ImageCreator:
         self.clear()
         self.draw = ImageDraw.Draw(self.image)
 
-    def write(self, text, loc):
-        self.draw.text(loc, text, font = self.font, fill = 0)
+    def write(self, text, fontSize, loc):
+        font = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), fontSize)
+        self.draw.text(loc, text, font = font, fill = 0)
 
     def setImage(self, imagefile, loc):
         img = Image.open(os.path.join(picdir, imagefile))

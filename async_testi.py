@@ -35,7 +35,7 @@ def async_wrap(func):
 
 async def count():
     x = 0
-    while x < 90:
+    while x < 1000:
         logging.info(x)
         await asyncio.sleep(0.1)
         x += 1
@@ -44,10 +44,10 @@ async def count():
 def update():
     w.update()
     img.initiate()
-    img.write(w.getLoc() + " " + w.getTime(), (10, 0))
-    img.write(w.getTemp(), (10, 40))
-    img.write(w.getWindSpd(), (10, 80))
-    img.write(w.getDescr(), (10, 120))
+    img.write(w.getLoc() + " " + w.getTime(), 42, (10, 0))
+    img.setImage("pilvinen.png", (330,100))
+    img.write(w.getWindSpd() + "m/s", 30, (410, 160))
+    img.write(w.getTemp() + "°C", 100, (10, 150))
     screen.draw(img.getImg())
 
 async_update = async_wrap(update)
