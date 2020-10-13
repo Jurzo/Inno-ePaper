@@ -45,7 +45,7 @@ def update():
     w.update()
     img.initiate()
     img.write(w.getLoc() + " " + w.getTime(), 42, (10, 0))
-    img.setImage("pilvinen.png", (330,100))
+    img.setImage("pilviä.png", (330,100))
     img.write(w.getWindSpd() + "m/s", 30, (410, 160))
     img.write(w.getTemp() + "°C", 100, (10, 150))
     screen.draw(img.getImg())
