@@ -44,12 +44,12 @@ def async_wrap(func):
 #    return
 
 async def getDist():
-    y = 0
-    while y < 100:
+    while 1:
         x = sensors.getDist()
         logging.info(x)
+        if x < 200:
+            break
         await asyncio.sleep(1)
-        y += 1
     return
 
 def update():
