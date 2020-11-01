@@ -1,0 +1,15 @@
+Sonic sensor:
+vcc             #2
+ground          #6
+trigger = 14    #8
+echo = 15       #10
+
+e-Paper:
+vcc             #17
+ground          #20
+DIN = 10        #19
+CLK = 11        #23
+CS = 8          #24
+DC = 25         #22
+RST = 17        #11
+BUSY = 24       #18
