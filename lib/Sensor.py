@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
-class Sensors:
+class sensors:
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
  
