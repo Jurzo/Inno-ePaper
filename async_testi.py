@@ -44,9 +44,9 @@ def async_wrap(func):
 #    return
 
 async def getDist():
-    x = sensors.getDist()
     y = 0
     while y < 100:
+        x = sensors.getDist()
         logging.info(x)
         await asyncio.sleep(1)
         y += 1
