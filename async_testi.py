@@ -10,6 +10,7 @@ if os.path.exists(libdir):
 import logging
 from waveshare_epd import epd7in5
 import weather as W
+import Sensor as S
 from Screen import Screen
 from Img import ImageCreator
 import time
@@ -20,7 +21,8 @@ from functools import wraps, partial
 logging.basicConfig(level=logging.DEBUG)
 logging.info("e-Paper testausta")
 
-w = W.weatherData()    
+w = W.weatherData()
+sensors = S.sensors()
 screen = Screen()
 img = ImageCreator()
 
@@ -33,11 +35,19 @@ def async_wrap(func):
         return await loop.run_in_executor(executor, pfunc)
     return run
 
-async def count():
-    x = 0
-    while x < 1000:
+#async def count():
+#    x = 0
+#    while x < 1000:
+#        logging.info(x)
+#        await asyncio.sleep(0.1)
+#        x += 1
+#    return
+
+async def getDist():
+    x = sensors.getDist()
+    while x < 100:
         logging.info(x)
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(1)
         x += 1
     return
 
@@ -58,9 +68,9 @@ async def updateLoop():
         await async_update()
 
 def main():
-    c = loop.create_task(count())
+    d = loop.create_task(getDist())
     loop.create_task(updateLoop())
-    loop.run_until_complete(c)
+    loop.run_until_complete(d)
 
 try:
     main()
