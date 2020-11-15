@@ -27,6 +27,9 @@ sensors = S.sensors()
 screen = Screen()
 img = ImageCreator()
 
+UDP_IP = "0.0.0.0" # listen to everything
+UDP_PORT = 1235 # port
+
 def async_wrap(func):
     @wraps(func)
     async def run(*args, loop=None, executor=None, **kwargs):
