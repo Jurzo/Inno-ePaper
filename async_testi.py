@@ -77,6 +77,7 @@ loop = asyncio.get_event_loop()
 
 async def updateLoop():
     command = ""
+    print("updateloop")
     while 1:
         ##await async_update()
         print("--")
