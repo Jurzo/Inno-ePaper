@@ -94,7 +94,7 @@ def main():
     print(1)
     loop.create_task(updateLoop())
     print(2)
-    loop.run_until_complete(d)
+    loop.run_forever()
 
 try:
     main()
