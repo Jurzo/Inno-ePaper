@@ -72,7 +72,7 @@ def update():
     img.write(w.getTemp() + "°C", 100, (10, 150))
     screen.draw(img.getImg())
 
-async_update = async_wrap(update)
+#async_update = async_wrap(update)
 loop = asyncio.get_event_loop()
 
 async def updateLoop():
