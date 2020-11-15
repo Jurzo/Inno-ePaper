@@ -17,6 +17,7 @@ import time
 import traceback
 import asyncio
 from functools import wraps, partial
+from aioudp import *
 
 logging.basicConfig(level=logging.DEBUG)
 logging.info("e-Paper testausta")
@@ -52,6 +53,13 @@ async def getDist():
         await asyncio.sleep(1)
     return
 
+async def UDPReceiver():
+    local = await open_local_endpoint(UDP_IP, UDP_PORT)
+    data, address = await local.receive()
+
+    print(f"Got {data!r} from {address[0]} port {address[1]}")
+    return data.decode("utf-8")
+
 def update():
     w.update()
     img.initiate()
@@ -65,8 +73,15 @@ async_update = async_wrap(update)
 loop = asyncio.get_event_loop()
 
 async def updateLoop():
+    command = ""
     while 1:
-        await async_update()
+        ##await async_update()
+        if len(command) == 0:
+            command = await UDPReceiver()
+            ###todo
+            print(command)
+            command = ""
+
 
 def main():
     d = loop.create_task(getDist())
