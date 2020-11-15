@@ -24,8 +24,8 @@ logging.info("e-Paper testausta")
 
 w = W.weatherData()
 sensors = S.sensors()
-#screen = Screen()
-#img = ImageCreator()
+screen = Screen()
+img = ImageCreator()
 
 UDP_IP = "0.0.0.0" # listen to everything
 UDP_PORT = 1235 # port
@@ -63,23 +63,23 @@ async def UDPReceiver():
     print(f"Got {data!r} from {address[0]} port {address[1]}")
     return data.decode("utf-8")
 
-#def update():
-#    w.update()
-#    img.initiate()
-#    img.write(w.getLoc() + " " + w.getTime(), 42, (10, 0))
-#    img.setImage("pilviä.png", (330,100))
-#    img.write(w.getWindSpd() + "m/s", 30, (410, 160))
-#    img.write(w.getTemp() + "°C", 100, (10, 150))
-#    screen.draw(img.getImg())
+def update():
+    w.update()
+    img.initiate()
+    img.write(w.getLoc() + " " + w.getTime(), 42, (10, 0))
+    img.setImage("pilviä.png", (330,100))
+    img.write(w.getWindSpd() + "m/s", 30, (410, 160))
+    img.write(w.getTemp() + "°C", 100, (10, 150))
+    screen.draw(img.getImg())
 
-#async_update = async_wrap(update)
+async_update = async_wrap(update)
 loop = asyncio.get_event_loop()
 
 async def updateLoop():
     command = ""
     print("updateloop")
     while 1:
-        ##await async_update()
+        await async_update()
         print("--")
         if len(command) == 0:
             print(".")
@@ -90,7 +90,7 @@ async def updateLoop():
 
 
 def main():
-    #d = loop.create_task(getDist())
+    d = loop.create_task(getDist())
     print(1)
     loop.create_task(updateLoop())
     print(2)
@@ -107,7 +107,7 @@ except KeyboardInterrupt:
     
 finally:
     time.sleep(4)
-    #screen.clear()
+    screen.clear()
     epd7in5.epdconfig.module_exit()
     exit()
 
