@@ -79,7 +79,9 @@ async def updateLoop():
     command = ""
     while 1:
         ##await async_update()
+        print("--")
         if len(command) == 0:
+            print(".")
             command = await UDPReceiver()
             ###todo
             print(command)
