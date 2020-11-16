@@ -76,25 +76,27 @@ async_update = async_wrap(update)
 loop = asyncio.get_event_loop()
 
 async def updateLoop():
-    command = ""
     print("updateloop")
     while 1:
         await async_update()
-        print("--")
+
+async def commands():
+    command = ""
+    while 1:
         if len(command) == 0:
-            print(".")
             command = await UDPReceiver()
-            ###todo
             print(command)
             command = ""
 
+def setAlarm():
+    #todo
+    raise NotImplementedError
 
 def main():
     d = loop.create_task(getDist())
-    print(1)
+    loop.create_task(commands())
     loop.create_task(updateLoop())
-    print(2)
-    loop.run_forever()
+    loop.run_until_complete(d)
 
 try:
     main()
