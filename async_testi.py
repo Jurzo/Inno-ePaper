@@ -13,7 +13,8 @@ import weather as W
 import Sensor as S
 from Screen import Screen
 from Img import ImageCreator
-import time
+import time as t
+from datetime import *
 import traceback
 import asyncio
 from functools import wraps, partial
@@ -38,14 +39,6 @@ def async_wrap(func):
         pfunc = partial(func, *args, **kwargs)
         return await loop.run_in_executor(executor, pfunc)
     return run
-
-#async def count():
-#    x = 0
-#    while x < 1000:
-#        logging.info(x)
-#        await asyncio.sleep(0.1)
-#        x += 1
-#    return
 
 async def getDist():
     while 1:
@@ -73,29 +66,49 @@ def update():
     screen.draw(img.getImg())
 
 async_update = async_wrap(update)
-loop = asyncio.get_event_loop()
 
-async def updateLoop():
+async def refresh():
     print("updateloop")
     while 1:
         await async_update()
 
-async def commands():
+async def main_loop():
+    alarmOn = False
+    alarmTime = time(0,0)
     command = ""
     while 1:
         if len(command) == 0:
             command = await UDPReceiver()
             print(command)
+            params = command.split("-")
+
+            if command == "alarm":
+                try:
+                    if (len(params) == 0):
+                        raise TypeError("No time given")
+                    alarmTime = time(params[:2], params[3:])
+                    alarmOn = True
+                except TypeError as e:
+                    print("Incorrect time parameters: " + params)
+                    print(e)
+
+            if alarmOn and alarmTime < datetime.now().time():
+                await alarm()
+
             command = ""
 
-def setAlarm():
-    #todo
-    raise NotImplementedError
+async def alarm():
+    # todo: play alarm sound and turn on lights
+    print("Alarm on")
+    await getDist()
+    print("Alarm off")
+    return
 
 def main():
+    loop = asyncio.get_event_loop()
     d = loop.create_task(getDist())
-    loop.create_task(commands())
-    loop.create_task(updateLoop())
+    loop.create_task(main_loop())
+    loop.create_task(refresh())
     loop.run_until_complete(d)
 
 try:
@@ -108,7 +121,7 @@ except KeyboardInterrupt:
     logging.info("ctrl + c:")
     
 finally:
-    time.sleep(4)
+    t.sleep(4)
     screen.clear()
     epd7in5.epdconfig.module_exit()
     exit()
