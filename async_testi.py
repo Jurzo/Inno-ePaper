@@ -83,13 +83,15 @@ async def main_loop():
         if len(command) == 0:
             command = await UDPReceiver()
             print(command)
-            params = command.split("-")
+            params = command.split("-")[1]
 
             if command == "alarm":
                 try:
                     if (len(params) == 0):
                         raise TypeError("No time given")
-                    alarmTime = time(params[:2], params[3:])
+                    params = params.split(':')
+                    print('params: ', params)
+                    alarmTime = time(int(params[0]), int(params[1]))
                     alarmOn = True
                 except TypeError as e:
                     print("Incorrect time parameters: " + params)
