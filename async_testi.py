@@ -47,7 +47,7 @@ async def getDist():
     while 1:
         x = sensors.getDist()
         logging.info(x)
-        if x < 200:
+        if x < 50:
             break
         await asyncio.sleep(1)
     return
@@ -76,7 +76,6 @@ async def refresh():
         await async_update()
 
 async def main_loop():
-    global alarmOn
     alarmTime = time(0,0)
     command = ""
     while 1:
@@ -94,14 +93,13 @@ async def main_loop():
                     params = params[1].split(':')
                     print('params: ', params)
                     alarmTime = time(int(params[0]), int(params[1]))
-                    alarmOn = True
                 except TypeError as e:
                     print("Incorrect time parameters: ", params)
                     print(e)
                 except Error as e:
                     print(e)
 
-            if alarmOn and alarmTime < datetime.now().time():
+            if alarmTime < datetime.now().time():
                 await alarm()
 
             command = ""
@@ -109,6 +107,7 @@ async def main_loop():
 async def alarm():
     # todo: play alarm sound and turn on lights
     global alarmOn
+    alarmOn = True
     print("Alarm on")
     await getDist()
     alarmOn = False
@@ -143,8 +142,10 @@ except KeyboardInterrupt:
     logging.info("ctrl + c:")
     
 finally:
-    t.sleep(4)
     screen.clear()
+    t.sleep(4)
     epd7in5.epdconfig.module_exit()
+    sensors.cleanup()
+    leds.stop()
     exit()
 
