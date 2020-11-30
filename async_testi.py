@@ -76,7 +76,7 @@ async def refresh():
         await async_update()
 
 async def main_loop():
-    alarmOn = False
+    global alarmOn
     alarmTime = time(0,0)
     command = ""
     while 1:
@@ -102,8 +102,8 @@ async def main_loop():
 
 async def alarm():
     # todo: play alarm sound and turn on lights
+    global alarmOn
     print("Alarm on")
-    alarmOn = True
     await getDist()
     alarmOn = False
     print("Alarm off")
@@ -111,7 +111,6 @@ async def alarm():
 
 async def ledControl():
     while 1:
-        print(1)
         if alarmOn and not leds.on:
             await leds.brighter()
         elif not alarmOn and leds.on:
