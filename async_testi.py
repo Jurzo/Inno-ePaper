@@ -110,16 +110,18 @@ async def alarm():
     return
 
 async def ledControl():
-    if alarmOn and not leds.on:
-        await leds.brighter()
-    elif not alarmOn and leds.on:
-        await leds.dim()
-    else:
-        await asyncio.sleep(1)
+    while 1:
+        if alarmOn and not leds.on:
+            await leds.brighter()
+        elif not alarmOn and leds.on:
+            await leds.dim()
+        else:
+            await asyncio.sleep(1)
 
 def main():
     loop = asyncio.get_event_loop()
-    d = loop.create_task(getDist())
+    loop.create_task(getDist())
+    loop.creare_task(ledControl())
     loop.create_task(main_loop())
     loop.create_task(refresh())
     loop.run_forever()
