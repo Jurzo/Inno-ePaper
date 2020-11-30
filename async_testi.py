@@ -85,16 +85,20 @@ async def main_loop():
             print(command)
             params = command.split("-")
 
-            if command == "alarm":
+            if params[0] == "alarm":
+                print('trying alarm setup')
                 try:
                     if (len(params) == 1):
                         raise TypeError("No time given")
-                    params = params.split('-')[1].split(':')
+                    print(params)
+                    params = params[1].split(':')
                     print('params: ', params)
                     alarmTime = time(int(params[0]), int(params[1]))
                     alarmOn = True
                 except TypeError as e:
-                    print("Incorrect time parameters: " + params)
+                    print("Incorrect time parameters: ", params)
+                    print(e)
+                except Error as e:
                     print(e)
 
             if alarmOn and alarmTime < datetime.now().time():
@@ -112,7 +116,9 @@ async def alarm():
     return
 
 async def ledControl():
+    global alarmOn
     while 1:
+        print(alarmOn, leds.on)
         if alarmOn and not leds.on:
             await leds.brighter()
         elif not alarmOn and leds.on:
