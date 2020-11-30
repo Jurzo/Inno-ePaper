@@ -24,7 +24,7 @@ class leds:
         self.on = False
 
     async def brighter(self):
-        for x in range(100):
+        for x in range(0, 100):
             for cycle in self.pwm:
                 cycle.ChangeDutyCycle(x)
                 await asyncio.sleep(0.1)
@@ -35,7 +35,7 @@ class leds:
         for x in range(100,-1,-1):
             for cycle in self.pwm:
                 cycle.ChangeDutyCycle(x)
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(0.01)
         self.on = False
         return
 

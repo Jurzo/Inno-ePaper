@@ -76,6 +76,7 @@ async def refresh():
         await async_update()
 
 async def main_loop():
+    global alarmOn
     alarmTime = time(0,0)
     command = ""
     while 1:
@@ -93,21 +94,19 @@ async def main_loop():
                     params = params[1].split(':')
                     print('params: ', params)
                     alarmTime = time(int(params[0]), int(params[1]))
+                    alarmOn = True
                 except TypeError as e:
                     print("Incorrect time parameters: ", params)
                     print(e)
-                except Error as e:
-                    print(e)
 
-            if alarmTime < datetime.now().time():
+            if alarmOn and alarmTime < datetime.now().time():
                 await alarm()
 
             command = ""
 
 async def alarm():
-    # todo: play alarm sound and turn on lights
+    # todo: play alarm sound
     global alarmOn
-    alarmOn = True
     print("Alarm on")
     await getDist()
     alarmOn = False
@@ -117,7 +116,6 @@ async def alarm():
 async def ledControl():
     global alarmOn
     while 1:
-        print(alarmOn, leds.on)
         if alarmOn and not leds.on:
             await leds.brighter()
         elif not alarmOn and leds.on:
