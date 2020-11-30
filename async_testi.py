@@ -120,7 +120,7 @@ async def ledControl():
 
 def main():
     loop = asyncio.get_event_loop()
-    loop.creare_task(ledControl())
+    loop.create_task(ledControl())
     loop.create_task(main_loop())
     loop.create_task(refresh())
     loop.run_forever()
