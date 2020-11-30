@@ -13,3 +13,9 @@ CS = 8          #24
 DC = 25         #22
 RST = 17        #11
 BUSY = 24       #18
+
+LEDs:
+GPIO21          #40
+GPIO20          #38
+GPIO16          #36
+GPIO12          #32

@@ -19,6 +19,7 @@ import traceback
 import asyncio
 from functools import wraps, partial
 from aioudp import *
+import led
 
 logging.basicConfig(level=logging.DEBUG)
 logging.info("e-Paper testausta")
@@ -27,6 +28,8 @@ w = W.weatherData()
 sensors = S.sensors()
 screen = Screen()
 img = ImageCreator()
+leds = led.leds()
+alarmOn = False
 
 UDP_IP = "0.0.0.0" # listen to everything
 UDP_PORT = 1235 # port
@@ -100,16 +103,26 @@ async def main_loop():
 async def alarm():
     # todo: play alarm sound and turn on lights
     print("Alarm on")
+    alarmOn = True
     await getDist()
+    alarmOn = False
     print("Alarm off")
     return
+
+async def ledControl():
+    if alarmOn and not leds.on:
+        await leds.brighter()
+    elif not alarmOn and leds.on:
+        await leds.dim()
+    else:
+        await asyncio.sleep(1)
 
 def main():
     loop = asyncio.get_event_loop()
     d = loop.create_task(getDist())
     loop.create_task(main_loop())
     loop.create_task(refresh())
-    loop.run_until_complete(d)
+    loop.run_forever()
 
 try:
     main()
