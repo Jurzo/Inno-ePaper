@@ -83,13 +83,13 @@ async def main_loop():
         if len(command) == 0:
             command = await UDPReceiver()
             print(command)
-            params = command.split("-")[1]
+            params = command.split("-")
 
             if command == "alarm":
                 try:
-                    if (len(params) == 0):
+                    if (len(params) == 1):
                         raise TypeError("No time given")
-                    params = params.split(':')
+                    params = params.split('-')[1].split(':')
                     print('params: ', params)
                     alarmTime = time(int(params[0]), int(params[1]))
                     alarmOn = True
